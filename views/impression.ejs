@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Table to PDF</title>
+  <!-- Include html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <button id="download-pdf">Download PDF</button>
+
+  <!-- Example HTML table -->
+  <table id="my-table" border="1">
+    <thead>
+      <tr>
+        <th>Nom et prénom</th>
+        <th>Date départ</th>
+        <th>Date Retour</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= nomprenom%></td>
+        <td>30/06/2024</td>
+        <td>05/07/2024</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    document.getElementById('download-pdf').addEventListener('click', function () {
+      const table = document.getElementById('my-table');
+      html2pdf(table);
+    });
+  </script>
+</body>
+</html>

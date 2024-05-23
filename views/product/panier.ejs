@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product List</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <% if(produits==null || produits.length== 0) {%>
+            <h4>Vous n'avez pas de produits ...</h4>  
+           <%}
+           else {
+           %>   
+              <% produits.forEach(produit=> {%><div class="col-md-3">
+                  <div class="card">
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="<%=produit%>">
+                    <div class="card-body">
+                      <h5 class="card-title"><%=produit%></h5>
+                      <p class="card-text">Description of <%=produit%>.</p>
+                      <p class="card-text">$10.00</p>
+                      
+                      <a class="btn btn-primary delete-from-basket" href="/product/delete?produit=<%=produit%>">Delete from Basket</a>
+                      </div>
+                  </div>
+                </div>
+      
+              <%}) }%>
+        </div>
+     
+    </div> 
+</body>
+</html>
