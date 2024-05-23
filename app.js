@@ -334,10 +334,12 @@ app.post('/users', async (req, res) => {
   })
 
 
+
   app.get('/products',(req,res)=>{
 
     res.render('product/home.ejs')
   })
+  
 
   app.get('/product/add', (req, res) => {
     const produitName=req.query.produit;
@@ -365,6 +367,11 @@ app.post('/users', async (req, res) => {
     req.session.panier = [];
     res.redirect('panier')
   });
+
+  app.get('/home', (req, res) => {
+    res.render('home'); // 'home' corresponds to 'home.ejs' in the views directory
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
