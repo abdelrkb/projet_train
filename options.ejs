@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transportation Company</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Optional CSS styling */
+    /* Add your custom CSS styles here */
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      
+    }
+  </style>
+</head>
+<body>
+
+
+
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Transport Company</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/reservation">Réservez votre ticket</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <h4>Etape 2 :</h4>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" style="background-color: rgb(12, 213, 203);">Informations générales</h5>
+            <p class="card-text">Votre trajet: <%= trajet%></p>
+            <p class="card-text">Date Départ : <%= dateDepart%></p>
+            <p class="card-text">Heure Départ : <%= heureDepart%></p>
+            <p class="card-text">Date Retour : <%= dateArrivee%></p>
+            <p class="card-text">Heure Retour : <%= heureRetour%></p>
+            <p class="card-text">Prix Départ: <%= prixDepart%></p>
+            <p class="card-text">Prix Retour: <%= prixRetour%></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          
+          <div class="card-body">
+            <h5  style="background-color: rgb(12, 213, 203);">Sélectioner vos options supp</h5>
+
+            <form action="/panier" method="post">
+          
+          
+             <input type="hidden" value="<%= dateDepart%>" name="dateDepart"> 
+             <input type="hidden" value="<%= dateArrivee%>" name="dateArrivee"> 
+             <input type="hidden" value="<%= trajet%>" name="trajet"> 
+             <input type="hidden" value="<%= prixDepart%>" name="prixDepart"> 
+             <input type="hidden" value="<%= prixRetour%>" name="prixRetour"> 
+             <input type="hidden" value="<%= heureDepart%>" name="heureDepart"> 
+             <input type="hidden" value="<%= heureRetour%>" name="heureRetour"> 
+           <% options.forEach(option => {%>
+            <span><%=option.nom %> <%=option.prix%> EUR: </span> <br>
+            <input type="checkbox"  name="ops[]" value="<%=option.nom %> <%=option.prix%>">
+            
+            <br><br>
+            
+           <%})%>
+          
+           
+          
+            <input class="btn btn-primary btn-lg"  type="submit" value="Ajouter au panier">
+          
+          </form>
+             
+
+             
+          </div>
+        </div>
+      </div>
+   
+    </div>
+
+
+
+<h5>Total : <span id="total"><%= Number(prixDepart) + Number(prixRetour)%></span> </h5>
+
+  <div class="container mt-5" style="margin-bottom: 400px;">
+ 
+<script>
+
+  const options = document.querySelectorAll("input[type='checkbox']")
+  const total = document.getElementById('total')
+  options.forEach(option=>{
+    option.addEventListener('change',()=>{
+    
+    if (option.checked) {
+      optionArray = option.value.split(" ")
+      total.innerHTML = Number(total.innerHTML) + Number(optionArray[1])
+   }
+   else
+   {
+    optionArray = option.value.split(" ")
+    total.innerHTML = Number(total.innerHTML) - Number(optionArray[1])
+
+   }
+    }
+
+    )
+   
+
+  })
+  
+</script>
+
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Transportation Company. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+
+  </script>
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

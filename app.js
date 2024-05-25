@@ -17,7 +17,10 @@ app.use(express.static('public')); // You can store static files like CSS, JavaS
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 30 * 60 * 1000 // Session duration: 30 minutes
+      }
   }));
 
 // connexion à la base des données 
@@ -34,8 +37,7 @@ db.once('open', () => {
 // créer une structure equivalante à la table = collection 
 const reservationSchema = new mongoose.Schema(
     {
-        "depart": String,
-        "arrivee": String,
+        "trajet": String,
         "retour" : Boolean,
         "dateDepart": String,
         "HeureDepart": String,
@@ -43,6 +45,7 @@ const reservationSchema = new mongoose.Schema(
         "dateArrivee": String,
         "HeureArrivee": String,
         "prixArrivee": String,
+        "dateReservation":Date
     }
 )
 const userSchema = new mongoose.Schema(
@@ -117,7 +120,8 @@ app.use((req,res,next)=>{
     next();
 })
 app.get('/', (req,res)=>{
-    res.render('home');
+    const reservations =  req.session.panier
+    res.render('home',{nombreReservations:reservations.length});
 })
 
 app.get('/reservation', async (req,res)=>{
@@ -220,6 +224,12 @@ app.post('/options', async (req,res)=>{
    
     res.render('options',{dateDepart:depart,dateArrivee:arrivee,trajet:trajet,prixDepart:prixDep,prixRetour:prixRe,heureDepart:heureDep,heureRetour:heureRe, options:options});
 })
+app.get('/panier', async (req,res)=>{
+    const reservations =  req.session.panier
+    console.log(reservations)
+    res.render("panier",{ reservations}) 
+
+})
 app.post('/panier', async (req,res)=>{
     const options =  await optionModel.find();
     // recuperer les options checked
@@ -253,14 +263,56 @@ app.get('/panier/delete', (req, res) => {
    req.session.panier = req.session.panier.filter(reservation => reservation.id !=id);
     res.send("<a href='/reservation'> Votre reservation a ete bien supprimé, vers reservation")
   });
+
+app.get('/payement',(req,res)=>{
+
+    const reservations = req.session.panier
+    let totalG = 0 ; 
+    reservations.forEach(reservation=>{
+        totalG += reservation.total
+    })
+
+    console.log(reservations)
+    console.log(totalG)
+
+   res.render('payer', { reservations,totalG}) 
+})  
 app.get('/confirmer', (req,res)=>{
     res.render('confirmer');
 })
-app.post('/print', (req,res)=>{
-    const nomprenom = req.body.cardholderName
+app.post('/print',  (req,res)=>{
+
+     const reservations = req.session.panier
+
+     reservations.forEach( async reservation=>{
+         
+        const res = new reservationModel(
+            {
+                trajet: reservation.trajet,
+                retour : false,
+                dateDepart: reservation.dateDepart,
+                HeureDepart: reservation.heureDepart,
+                prixDepart: reservation.prixDepart,
+                dateArrivee: reservation.dateArrivee,
+                HeureArrivee: reservation.heureDepart,
+                prixArrivee: reservation.prixRetour,
+                dateReservation:Date.now()
+            }
+        )
+        try{
+            const newRes = await res.save();
+           
+        }
+        catch(err){
     
-    const {dateDepart,dateArrivee,trajet,prixDepart,prixRetour, heureDepart, heureRetour} = req.body
-    res.render('impression',{nomprenom});
+            console.log(err.message)
+    
+        }
+
+
+     })
+    
+    res.render('impression');
 })
 app.get('/users', async (req, res) => {
 
@@ -334,12 +386,10 @@ app.post('/users', async (req, res) => {
   })
 
 
-
   app.get('/products',(req,res)=>{
 
     res.render('product/home.ejs')
   })
-  
 
   app.get('/product/add', (req, res) => {
     const produitName=req.query.produit;
@@ -367,11 +417,6 @@ app.post('/users', async (req, res) => {
     req.session.panier = [];
     res.redirect('panier')
   });
-
-  app.get('/home', (req, res) => {
-    res.render('home'); // 'home' corresponds to 'home.ejs' in the views directory
-});
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
