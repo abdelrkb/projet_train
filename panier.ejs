@@ -7,28 +7,33 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+    <h4><a href="/vider_panier">Vider votre panier</a></h4>
     <div class="container">
         <div class="row">
-            <% if(produits==null || produits.length== 0) {%>
-            <h4>Vous n'avez pas de produits ...</h4>  
+            <% if(reservations == undefined || reservations==null || reservations.length== 0 ) {%>
+            <h4>Vous n'avez pas de reservations ...</h4>  
            <%}
            else {
            %>   
-              <% produits.forEach(produit=> {%><div class="col-md-3">
+              <% reservations.forEach(reservation=> {%><div class="col-md-3">
                   <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="<%=produit%>">
-                    <div class="card-body">
-                      <h5 class="card-title"><%=produit%></h5>
-                      <p class="card-text">Description of <%=produit%>.</p>
-                      <p class="card-text">$10.00</p>
+                  <div class="card-body">
+                      <label for=""> Date de réservation : </label>
+                      <h5 class="card-title"><%=reservation.dateDepart%></h5>
+                      <h5 class="card-title"><%=reservation.dateArrivee%></h5>
+                   
+                      <p class="card-text"><%=reservation.total%></p>
                       
-                      <a class="btn btn-primary delete-from-basket" href="/product/delete?produit=<%=produit%>">Delete from Basket</a>
+                      <a class="btn btn-primary delete-from-basket" href="/panier/delete?id=<%=reservation.id%>">Delete reservation</a>
                       </div>
                   </div>
                 </div>
       
               <%}) }%>
         </div>
+        <br><br><br>
+        <a class="btn btn-primary" href="/payement">Finish your reservation</a>
      
     </div> 
 </body>
