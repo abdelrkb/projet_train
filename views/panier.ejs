@@ -11,7 +11,7 @@
     <h4><a href="/vider_panier">Vider votre panier</a></h4>
     <div class="container">
         <div class="row">
-            <% if(reservations==null || reservations.length== 0) {%>
+            <% if(reservations == undefined || reservations==null || reservations.length== 0 ) {%>
             <h4>Vous n'avez pas de reservations ...</h4>  
            <%}
            else {
@@ -32,6 +32,8 @@
       
               <%}) }%>
         </div>
+        <br><br><br>
+        <a class="btn btn-primary" href="/payement">Finish your reservation</a>
      
     </div> 
 </body>

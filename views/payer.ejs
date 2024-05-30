@@ -50,51 +50,17 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title" style="background-color: rgb(12, 213, 203);">Informations générales</h5>
-            <p class="card-text">Votre trajet: <%= trajet%></p>
-            <p class="card-text">Date Départ : <%= dateDepart%></p>
-            <p class="card-text">Date Retour : <%= dateArrivee%></p>
-            <p class="card-text">Prix Départ: <%= prixDepart%></p>
-            <p class="card-text">Prix Retour: <%= prixRetour%></p>
-            <p class="card-text">Heure Départ: <%= heureDepart%></p>
-            <p class="card-text">Heure Retour: <%= heureRetour%></p>
-          </div>
-        </div>
+       Total à payer = <%= totalG %>
       </div>
       <div class="col-md-4">
         <div class="card">
           
-          <div class="card-body">
-            <h5 class="card-title" style="background-color: rgb(12, 213, 203);">Vos options choisis</h5>
-            <% optionsCho.forEach(option => {
-              
-
-
-              %>
-              
-              <p class="card-text"><%=option.nom %> <%=option.prix%> EUR:</p>
-              
-             <%})%>
-
-             <h3 style="text-align: center;">Votre total à payer est : <%= total %> Eur</h3>
-            
-          </div>
+         
         </div>
       </div>
       <div class="col-md-4">
         <div class="card">
-         <div class="card-body">
-            <h5 class="card-title" style="background-color: rgb(12, 213, 203);">Modifier vos options</h5>
-            <% options.forEach(option => {
-              %>
-               <span><%=option.nom %> <%=option.prix%> EUR: </span> <br>
-               <input type="checkbox" name="<%=option.nom%>" <% if(checkBoxNoms.includes(option.nom))  {%> checked  <%}%> value="<%=option.prix%>">
-               <br><br>
-               
-               <%})%>
-          </div>
+       
         </div>
       </div>
     </div>
@@ -134,13 +100,7 @@
           <label for="cardholderName">Cardholder Name</label>
           <input type="text" class="form-control" name="cardholderName" placeholder="Entrez votre nom et prénom" required>
         </div>
-        <input type="hidden" value="<%= dateDepart%>" name="dateDepart"> 
-        <input type="hidden" value="<%= dateArrivee%>" name="dateArrivee"> 
-        <input type="hidden" value="<%= trajet%>" name="trajet"> 
-        <input type="hidden" value="<%= prixDepart%>" name="prixDepart"> 
-        <input type="hidden" value="<%= prixRetour%>" name="prixRetour"> 
-        <input type="hidden" value="<%= heureDepart%>" name="heureDepart"> 
-        <input type="hidden" value="<%= heureRetour%>" name="heureRetour">
+       
         <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
       </form>
     </div>

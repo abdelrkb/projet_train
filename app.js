@@ -417,6 +417,14 @@ app.post('/users', async (req, res) => {
     req.session.panier = [];
     res.redirect('panier')
   });
+
+
+app.get('/home', (req, res) => {
+    console.log('Home route accessed');
+    res.render('home');
+});
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
