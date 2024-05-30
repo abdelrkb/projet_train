@@ -54,10 +54,11 @@
             <div class="card">
               <div class="card-body">
                 <label>Date de réservation:</label>
-                <h5 class="card-title"><%= reservation.dateDepart %></h5>
+                <h5 class="card-title">Date départ: <%= reservation.dateDepart %></h5>
+                <h5 class="card-title">Heure départ: <%= reservation.heureDepart %></h5>
                 <h5 class="card-title"><%= reservation.dateArrivee %></h5>
                 <p class="card-text"><%= reservation.total %></p>
-                <a class="btn btn-primary delete-from-basket" href="/panier/delete?id=<%= reservation.id %>">Supprimer la réservation</a>
+                <a class="btn btn-primary delete-from-basket" href="/panier/delete/<%= reservation.id %>">Supprimer la réservation</a>
               </div>
             </div>
           </div>

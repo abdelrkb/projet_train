@@ -77,9 +77,16 @@
             <h5 class="card-title">Sélectionner vos options supplémentaires</h5>
             <div class="options-container">
               <form action="/panier" method="post">
+                <input type="hidden" value="<%= dateDepart%>" name="dateDepart"> 
+                <input type="hidden" value="<%= dateArrivee%>" name="dateArrivee"> 
+                <input type="hidden" value="<%= trajet%>" name="trajet"> 
+                <input type="hidden" value="<%= prixDepart%>" name="prixDepart"> 
+                <input type="hidden" value="<%= prixRetour%>" name="prixRetour"> 
+                <input type="hidden" value="<%= heureDepart%>" name="heureDepart"> 
+                <input type="hidden" value="<%= heureRetour%>" name="heureRetour"> 
                 <% options.forEach(option => { %>
                   <div class="option-item">
-                    <input type="checkbox" name="ops[]" value="<%= option.nom %> <%= option.prix %>">
+                    <input type="checkbox" class="option" name="ops[]" value="<%= option.nom %> <%= option.prix %>">
                     <label class="option-label"><%= option.nom %> <%= option.prix %> €</label>
                   </div>
                 <% }) %>
@@ -92,8 +99,33 @@
     </div>
     <h5 class="total-text text-center mt-4">Total : <span id="total"><%= Number(prixDepart) + Number(prixRetour) %></span> </h5>
   </div>
+  <script>
+    const options = document.querySelectorAll("input[type='checkbox']")
+    const total = document.getElementById('total')
+    options.forEach(option=>{
+      option.addEventListener('change',()=>{
+      
+      if (option.checked) {
+        optionArray = option.value.split(" ")
+        total.innerHTML = Number(total.innerHTML) + Number(optionArray[1])
+     } else {
+      optionArray = option.value.split(" ")
+      total.innerHTML = Number(total.innerHTML) - Number(optionArray[1])
+     }})})
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ensure the checkbox is unchecked on page load
+      const optionsCheck = document.querySelectorAll('input.option')
+      optionsCheck.forEach(option=>{
+          option.checked = false;
+      })
 
+      
+    });
+  </script>
   <!-- Bootstrap JS and dependencies -->
+  
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

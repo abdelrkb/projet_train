@@ -179,7 +179,6 @@ app.post('/options', async (req, res) => {
     const options = await optionModel.find();
     
     const { depart, arrivee, trajet, retour, prixdepart, prixretour } = req.body;
-
     let prixDep = 0;
     let heureDep = null;
     let prixRe = 0;
@@ -222,32 +221,36 @@ app.post('/panier', async (req,res)=>{
     
     const {dateDepart,dateArrivee,trajet,prixDepart,prixRetour, heureDepart, heureRetour} = req.body
     let total = Number(prixDepart) + Number(prixRetour)
-  
+    console.log("dateDepart")
+    console.log(dateDepart)
     const optionscoch = []
     checkBoxNoms=[]
-    checkBox.forEach(btn=>{
+    if (checkBox != undefined) {checkBox.forEach(btn=>{
         btnArray = btn.split(" ")
         const op= {"nom":btnArray[0],"prix":btnArray[1]} 
         total += Number(btnArray[1]) 
         optionscoch.push(op)
         checkBoxNoms.push(btnArray[0])
-    })
+    })}
     //res.send(checkBoxNoms)
     const idR = uuidv4()
     req.session.panier.push({id:idR,dateDepart:dateDepart,dateArrivee:dateArrivee,trajet:trajet,prixDepart:prixDepart,prixRetour:prixRetour, heureDepart:heureDepart, heureRetour:heureRetour,optionsCho:optionscoch,total:total,options:options,checkBox:checkBox ,checkBoxNoms:checkBoxNoms})
     const reservations =  req.session.panier
-    console.log(reservations)
-    res.render("panier",{ reservations}) 
+    res.redirect('/panier'); 
+    //res.render("panier",{ reservations}) 
     //  res.render('payer',{dateDepart:dateDepart,dateArrivee:dateArrivee,trajet:trajet,prixDepart:prixDepart,prixRetour:prixRetour, heureDepart:heureDepart, heureRetour:heureRetour,optionsCho:optionscoch,total:total,options:options,checkBox:checkBox ,checkBoxNoms:checkBoxNoms, train2: '/images/train2.png', train: '/images/train.jpeg'}); /* sandBox de paypal */
 })
 
-app.get('/panier/delete', (req, res) => {
+app.get('/panier/delete/:id',  (req, res) => {
     const id=req.params.id
     
+    
+   req.session.panier =  req.session.panier.filter(reservation => reservation.id !=id);
+   
   
-   req.session.panier = req.session.panier.filter(reservation => reservation.id !=id);
-    res.send("<a href='/reservation'> Votre reservation a ete bien supprimé, vers reservation")
-  });
+   //res.send("<a href='/panier'> Votre reservation a ete bien supprimé, vers panier")
+   res.redirect('/panier')  
+});
 
 app.get('/payement',(req,res)=>{
 
