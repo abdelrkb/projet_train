@@ -413,7 +413,7 @@ app.post('/users', async (req, res) => {
     res.render('product/panier', {produits: produits});
   });
   app.get('/vider_panier', (req, res) => {
-    // Clear the session array
+    // Clear the session array/
     req.session.panier = [];
     res.redirect('panier')
   });

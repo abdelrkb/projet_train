@@ -3,40 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product List</title>
+  <title>Home</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h3><a href="/panier">Mon panier</a></h3>
-    <h1>Product List</h1>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product 1">
-          <div class="card-body">
-            <h5 class="card-title">Product 1</h5>
-            <p class="card-text">Description of product 1.</p>
-            <p class="card-text">$10.00</p>
-            <a class="btn btn-primary add-to-basket" href="/product/add?produit=produit1">Add to Basket</a>
-          </div>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Transport Reservation</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/home">Home <span class="sr-only">(current) </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/reservation">Réservez votre ticket</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/panier">Votre panier</a>
+          </li>
+        </ul>
       </div>
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product 2">
-          <div class="card-body">
-            <h5 class="card-title">Product 2</h5>
-            <p class="card-text">Description of product 2.</p>
-            <p class="card-text">$15.00</p>
-            <a class="btn btn-primary add-to-basket" href="/product/add?produit=produit2">Add to Basket</a>
-          </div>
-        </div>
-      </div>
-      <!-- Add more products as needed -->
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="jumbotron">
+      <h1 class="display-4">Bienvenue sur notre site de résérvation de billets de trains</h1>
+      <p class="lead">Nous vous apportons des billets de trains au meilleur prix et avec une assurance hors du commun.</p>
+      <hr class="my-4">
+      <p>Explorez notre site et réservez vos billets au meilleur prix</p>
+      <a class="btn btn-primary btn-lg" href="/reservation" role="button">Reservez vos billets</a>
     </div>
   </div>
 
-  
+
 </body>
 </html>

@@ -1,0 +1,73 @@
+/* public/css/style.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #f8f9fa;
+    color: #333;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-check-label {
+    margin-left: 5px;
+  }
+  
+  #confirmer {
+    margin-top: 20px;
+  }
+  
+
+ /* Custom styles for trip sections */
+.trip-section {
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .trip-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .trip-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .trip-item:last-child {
+    border-bottom: none;
+  }
+  
+  .trip-item label {
+    margin: 0;
+  }
+  
+  .trip-item input[type="radio"] {
+    margin-left: 10px;
+  }
+  
+  /* Centering form elements */
+  .form-group.text-center {
+    text-align: center;
+  }
+  
+  
