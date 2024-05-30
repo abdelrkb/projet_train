@@ -5,56 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panier</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <style>
+    /* Custom CSS */
+    .container {
+      padding-top: 50px; /* Adjust the top padding to accommodate the fixed navbar */
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .delete-from-basket {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Transport Reservation</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Transport Reservation</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/home">Home </a>
+            <a class="nav-link" href="/home">Home</a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/reservation">Réservez votre ticket </a>
+          <li class="nav-item">
+            <a class="nav-link" href="/reservation">Réservez votre ticket</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/panier">Votre panier <span class="sr-only">(current) </span></a>
+            <a class="nav-link" href="/panier">Votre panier <span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
-    </div>
   </nav>
-    <h4><a href="/vider_panier">Vider votre panier</a></h4>
-    <div class="container">
-        <div class="row">
-            <% if(reservations == undefined || reservations==null || reservations.length== 0 ) {%>
-            <h4>Vous n'avez pas de reservations ...</h4>  
-           <%}
-           else {
-           %>   
-              <% reservations.forEach(reservation=> {%><div class="col-md-3">
-                  <div class="card">
-                  <div class="card-body">
-                      <label for=""> Date de réservation : </label>
-                      <h5 class="card-title"><%=reservation.dateDepart%></h5>
-                      <h5 class="card-title"><%=reservation.dateArrivee%></h5>
-                   
-                      <p class="card-text"><%=reservation.total%></p>
-                      
-                      <a class="btn btn-primary delete-from-basket" href="/panier/delete?id=<%=reservation.id%>">Delete reservation</a>
-                      </div>
-                  </div>
-                </div>
-      
-              <%}) }%>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Votre panier</h1>
+    <h4 class="text-center"><a href="/vider_panier">Vider votre panier</a></h4>
+    <div class="row">
+      <% if(reservations == undefined || reservations==null || reservations.length== 0 ) { %>
+        <div class="col-md-12">
+          <h4>Vous n'avez pas de réservations...</h4>  
         </div>
-        <br><br><br>
-        <a class="btn btn-primary" href="/payement">Finish your reservation</a>
-     
-    </div> 
+      <% } else { %>
+        <% reservations.forEach(reservation => { %>
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <label>Date de réservation:</label>
+                <h5 class="card-title"><%= reservation.dateDepart %></h5>
+                <h5 class="card-title"><%= reservation.dateArrivee %></h5>
+                <p class="card-text"><%= reservation.total %></p>
+                <a class="btn btn-primary delete-from-basket" href="/panier/delete?id=<%= reservation.id %>">Supprimer la réservation</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+    <br><br><br>
+    <div class="text-center">
+    <a class="btn btn-primary" href="/payement">Terminer votre réservation</a>
+    </div>
+  </div> 
 </body>
 </html>

@@ -91,9 +91,9 @@
                     const departpar = JSON.parse(depart)
                 %>
                 <li class="trip-item">
-                  <label> Temps : <%=departpar.temps%></label>
-                  <input type="radio" onchange="test()" id="prixdepart" value="<%=departpar.temps%> <%=departpar.prix%>" name ="prixdepart">
-                  <label> Prix : <%=departpar.prix%></label>
+                  <label> Heure : <%=departpar.temps%></label>
+                  <input type="radio" onchange="test()" id="prixdepart" value="<%=departpar.temps%> <%=departpar.prix%>" name="prixdepart">
+                  <label> Prix : <%=departpar.prix%>€</label>
                 </li>
                 <% })
                 }) %>
@@ -111,9 +111,9 @@
                     const arriveepar = JSON.parse(arrivee)
                 %>
                 <li class="trip-item">
-                  <label> Temps : <%=arriveepar.temps%></label>
-                  <input type="radio" id="prixretour" value="<%=arriveepar.temps%> <%=arriveepar.prix%>" name ="prixretour"\>
-                  <label> Prix : <%=arriveepar.prix%></label>
+                  <label> Heure : <%=arriveepar.temps%></label>
+                  <input type="radio" id="prixretour" value="<%=arriveepar.temps%> <%=arriveepar.prix%>" name="prixretour">
+                  <label> Prix : <%=arriveepar.prix%>€</label>
                 </li>
                 <% })
                   })

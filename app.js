@@ -133,7 +133,7 @@ app.get('/reservation', async (req,res)=>{
 })
 
 app.post('/reservation/search', async (req,res)=>{
-    const {depart,arrivee,trajet, retour} = req.body;
+    const {depart,arrivee,trajet, retour, prixdepart, prixretour} = req.body;
     const search = true;
 
     //res.send(retour)
@@ -144,7 +144,7 @@ app.post('/reservation/search', async (req,res)=>{
         'trajet':trajet
     });
     
-    res.render('reservation',  {trajets: trajets,search:search,depart:depart,arrivee:arrivee,retour:retour});
+    res.render('reservation',  {trajets: trajets, search: search, depart: depart, arrivee: arrivee, retour: retour, prixdepart: prixdepart, prixretour: prixretour});
 })
 
 app.get('/trajet', async (req,res)=>{
@@ -175,55 +175,40 @@ app.post('/trajet', async (req,res)=>{
     
 })
 
-app.post('/options', async (req,res)=>{
-    const options =  await optionModel.find();
+app.post('/options', async (req, res) => {
+    const options = await optionModel.find();
     
-    //req.session.reservations = req.session.reservations + []
+    const { depart, arrivee, trajet, retour, prixdepart, prixretour } = req.body;
 
-    const {depart,arrivee,trajet,prixdepart,prixretour} = req.body;
-    
-    const heureprixD = prixdepart.split(' ')
-   
+    let prixDep = 0;
+    let heureDep = null;
+    let prixRe = 0;
+    let heureRe = null;
 
-    console.log(prixretour != "undefined" )
+    if (prixdepart) {
+        const heureprixD = prixdepart.split(' ');
+        prixDep = heureprixD[1];
+        heureDep = heureprixD[0];
+    }
     
-    if(prixretour != undefined )
-        { 
-       const  heureprixR= prixretour.split(' ')
-       prixRe = heureprixR[1]
-       heureRe = heureprixR[0]
-        } 
-        else
-        {
-            prixRe = 0
-            heureRe = null
-        }
+    if (prixretour) {
+        const heureprixR = prixretour.split(' ');
+        prixRe = heureprixR[1];
+        heureRe = heureprixR[0];
+    }
 
-     
-    
-    
-    prixDep = heureprixD[1]
-    heureDep = heureprixD[0]
-    
-/*
-    const reservation = new reservationModel(
-        {
-            "depart": depart,
-            "arrivee": arrivee,
-            "retour" : Boolean,
-            "dateDepart": String,
-            "HeureDepart": String,
-            "prixDepart": String,
-            "dateArrivee": String,
-            "HeureArrivee": String,
-            "prixArrivee": String,
-        }
-    )
-    req.session.reservations.push(reservation)*/
-    //res.send(heureprixR)
-   
-    res.render('options',{dateDepart:depart,dateArrivee:arrivee,trajet:trajet,prixDepart:prixDep,prixRetour:prixRe,heureDepart:heureDep,heureRetour:heureRe, options:options});
-})
+    res.render('options', { 
+        dateDepart: depart, 
+        dateArrivee: arrivee, 
+        trajet: trajet, 
+        prixDepart: prixDep, 
+        prixRetour: prixRe, 
+        heureDepart: heureDep, 
+        heureRetour: heureRe, 
+        options: options 
+    });
+});
+
 app.get('/panier', async (req,res)=>{
     const reservations =  req.session.panier
     console.log(reservations)
