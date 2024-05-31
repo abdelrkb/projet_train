@@ -18,7 +18,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/home">Home</a>
+          <a class="nav-link" href="/home">Acceuil</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/reservation">Réservez votre ticket</a>
@@ -32,9 +32,10 @@
 
 <body>
   <br><br><br>
-  <button id="download-pdf">Download PDF</button>
 
   <!-- Example HTML table -->
+  <div class="container mt-5 text-center">
+    <h1> Récapitulatif Billets </h1>
   <table id="my-table" border="1">
     <thead>
       <tr>
@@ -65,7 +66,16 @@
         </tr>
       <% }); %>
     </tbody>
+
   </table>
+  <br> 
+  <button width = "50px" class="btn btn-primary text-center" id="download-pdf">Download PDF</button>
+  <br>  <br>
+
+  <button width = "50px" class="btn btn-primary text-center" href="/home">Revenir a l'acceuil</button>
+
+</div>
+
   <!--
         const res = new reservationModel(
             {
