@@ -6,6 +6,7 @@
   <title>Transportation Company</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="/css/style.css" rel="stylesheet">
   <style>
     /* Optional CSS styling */
     /* Add your custom CSS styles here */
@@ -22,62 +23,29 @@
   
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
       <a class="navbar-brand" href="#">Transport Company</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#">Home </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/reservation">Réservez votre ticket</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+          <li class="nav-item active">
+            <a class="nav-link" href="/panier">Mon Panier <span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
-    </div>
   </nav>
-  <h4>Etape 3 :</h4>
+  <div class="container mt-5">
+    <h1>Paiement :</h1>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-       Total à payer = <%= totalG %>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
+       <p class="text-center">Total :<%= totalG %> €</p>
           
-         
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-       
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-<div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2>Payment Details</h2>
@@ -88,7 +56,7 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="expiryDate">Expiry Date</label>
+            <label for="expiryDate">Date d'expiration Date</label>
             <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
           </div>
           <div class="form-group col-md-6">
@@ -97,11 +65,16 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="cardholderName">Cardholder Name</label>
-          <input type="text" class="form-control" name="cardholderName" placeholder="Entrez votre nom et prénom" required>
+          <label for="cardholderName">Nom du titulaire de la carte</label>
+          <input type="text" class="form-control" id="cardholderName" name="cardholderName" placeholder="Entrez votre nom et prénom" required>
+        </div>
+
+        <div>
+          <label for="abonne"> </label>
+
         </div>
        
-        <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
+        <button type="submit" class="btn btn-primary btn-block">Payer</button>
       </form>
     </div>
   </div>
@@ -112,14 +85,10 @@
 
 
 
-  </div>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2024 Transportation Company. All rights reserved.</p>
-    </div>
-  </footer>
-  
+
+</div>
+
 <script>
 
   const options = document.querySelectorAll("input[type='checkbox']")  // la liste de inputs checkbox

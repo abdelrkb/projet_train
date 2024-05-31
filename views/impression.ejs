@@ -3,36 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Table to PDF</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <title>Print Ticket</title>
   <!-- Include html2pdf library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">Transport Reservation</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/reservation">Réservez votre ticket</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/panier">Votre panier <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+</nav>
+
 <body>
+  <br><br><br>
   <button id="download-pdf">Download PDF</button>
 
   <!-- Example HTML table -->
   <table id="my-table" border="1">
     <thead>
       <tr>
-        <th>Nom et prénom</th>
-        <th>Date départ</th>
-        <th>Date Retour</th>
+        <th> Nom </th>
+        <th>Trajet</th>
+        <th>Ticket Aller</th>
+        <th>Prix Aller</th>
+        <th>Ticket Retour</th>
+        <th>Prix Retour</th>
+        <th> Numéro de billet</th>
+        <th> Date de résérvation</th>
+        <th class="text-center"> QR CODE </th>
+        <!-- Ajoutez d'autres en-têtes de colonne selon vos besoins -->
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td></td>
-        <td>30/06/2024</td>
-        <td>05/07/2024</td>
-      </tr>
+      <% reservations.forEach(reservation => { %>
+        <tr class="text-center">
+          <td width = "120px"><%= name %> </td> <!--         <th> Nom </th>          -->
+          <td width = "120px"><%= reservation.trajet %></td> <!--<th>Trajet</th> -->
+          <td width = "120px"><%= reservation.dateDepart %> <%= reservation.heureDepart %></td> <!--<th>Ticket Aller</th> -->
+          <td width = "120px"><%= reservation.prixDepart %></td> <!--<th>Prix Aller</th> -->
+          <td width = "120px"><%= reservation.dateArrivee %> <%= reservation.HeureArrivee %></td> <!--<th>Ticket Retour</th> -->
+          <td width = "120px"><%= reservation.prixRetour %></td> <!-- <th>Prix Retour</th> -->
+          <td width = "120px"><%= ticketNumber %></td><!-- -->
+          <td width = "120px"><%= new Date().toISOString().slice(0,10) %></td>
+          <td class="text-center"><img width = "50px" src="/images/qrcode.png" alt="QR Code"></td>
+        </tr>
+      <% }); %>
     </tbody>
   </table>
+  <!--
+        const res = new reservationModel(
+            {
+                trajet: reservation.trajet,
+                retour : false,
+                dateDepart: reservation.dateDepart,
+                HeureDepart: reservation.heureDepart,
+                prixDepart: reservation.prixDepart,
+                dateArrivee: reservation.dateArrivee,
+                HeureArrivee: reservation.heureDepart,
+                prixArrivee: reservation.prixRetour,
+                dateReservation:Date.now()
+                totalPrix : reservation.prixDepart + reservation.prixArrivee
+            }
+        )
+  -->
 
   <script>
     document.getElementById('download-pdf').addEventListener('click', function () {
       const table = document.getElementById('my-table');
       html2pdf(table);
     });
+
+
+
   </script>
 </body>
 </html>

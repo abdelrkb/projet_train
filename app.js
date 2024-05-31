@@ -268,12 +268,31 @@ app.get('/payement',(req,res)=>{
 app.get('/confirmer', (req,res)=>{
     res.render('confirmer');
 })
+
+function generateRandomTicketNumber() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let ticketNumber = ''; 
+    ticketNumber += letters.charAt(Math.floor(Math.random() * letters.length));
+    for (let i = 0; i < 4; i++) {
+      ticketNumber += Math.floor(Math.random() * 10); // Ajoute un chiffre aléatoire
+    }
+    for (let i = 0; i < 3; i++) {
+      ticketNumber += letters.charAt(Math.floor(Math.random() * letters.length)); // Ajoute une lettre aléatoire
+    }
+    return ticketNumber;
+  }
+
 app.post('/print',  (req,res)=>{
 
-     const reservations = req.session.panier
+     const reservations = req.session.panier;
+     const name = req.body.cardholderName;
+     const ticketNumber = generateRandomTicketNumber();
+
 
      reservations.forEach( async reservation=>{
-         
+        if (!reservations) {
+            throw new Error("Panier non défini dans la session.");
+        }
         const res = new reservationModel(
             {
                 trajet: reservation.trajet,
@@ -284,7 +303,8 @@ app.post('/print',  (req,res)=>{
                 dateArrivee: reservation.dateArrivee,
                 HeureArrivee: reservation.heureDepart,
                 prixArrivee: reservation.prixRetour,
-                dateReservation:Date.now()
+                dateReservation:Date.now(),
+                totalPrix : reservation.prixDepart + reservation.prixArrivee
             }
         )
         try{
@@ -297,11 +317,10 @@ app.post('/print',  (req,res)=>{
     
         }
 
-
      })
-    
-    res.render('impression');
-})
+     console.log(reservations);
+     res.render('impression', { reservations: reservations, name: name , ticketNumber: ticketNumber});
+    })
 app.get('/users', async (req, res) => {
 
     const users =  await userModel.find();
