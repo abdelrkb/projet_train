@@ -75,11 +75,12 @@
         </div>
       </div>
       <div class="col-md-6">
+        <form action="/panier" method="post">
         <% if (user.abonnement) { %>
           <div class="card">
               <div class="card-body">
                   <h5 class="card-title">Utiliser votre carte d'abonnement pour une réduction de 10 € ?</h5>
-                  <input type="checkbox" class="reduc" name="reduc" value="reduc" id="reduc">
+                  <input type="checkbox" name="reduc" class="reduc" value="1">
                   <label class="option-label"> Utiliser réduction</label>
               </div>
           </div>
@@ -88,22 +89,24 @@
           <div class="card-body">
             <h5 class="card-title">Sélectionner vos options supplémentaires</h5>
             <div class="options-container">
-              <form action="/panier" method="post">
-                <input type="hidden" value="<%= dateDepart%>" name="dateDepart"> 
-                <input type="hidden" value="<%= dateArrivee%>" name="dateArrivee"> 
-                <input type="hidden" value="<%= trajet%>" name="trajet"> 
-                <input type="hidden" value="<%= prixDepart%>" name="prixDepart"> 
-                <input type="hidden" value="<%= prixRetour%>" name="prixRetour"> 
-                <input type="hidden" value="<%= heureDepart%>" name="heureDepart"> 
-                <input type="hidden" value="<%= heureRetour%>" name="heureRetour"> 
+                <input type="hidden" value="<%= dateDepart%>" name="dateDepart">
+                <input type="hidden" value="<%= dateArrivee%>" name="dateArrivee">
+                <input type="hidden" value="<%= trajet%>" name="trajet">
+                <input type="hidden" value="<%= prixDepart%>" name="prixDepart">
+                <input type="hidden" value="<%= prixRetour%>" name="prixRetour">
+                <input type="hidden" value="<%= heureDepart%>" name="heureDepart">
+                <input type="hidden" value="<%= heureRetour%>" name="heureRetour">
+                
                 <% options.forEach(option => { %>
-                  <div class="option-item">
-                    <input type="checkbox" class="option" name="ops[]" value="<%= option.nom %> <%= option.prix %>">
-                    <label class="option-label"><%= option.nom %> <%= option.prix %> €</label>
-                  </div>
+                    <div class="option-item">
+                        <input type="checkbox" class="option" name="ops[]" value="<%= option.nom %> <%= option.prix %>">
+                        <label class="option-label"><%= option.nom %> <%= option.prix %> €</label>
+                    </div>
                 <% }) %>
+                        
                 <input class="btn btn-primary btn-lg mt-3" type="submit" value="Ajouter au panier">
-              </form>
+            </form>
+            
             </div>
           </div>
         </div>
@@ -112,35 +115,51 @@
     <h5 class="total-text text-center mt-4">Total : <span id="total"><%= Number(prixDepart) + Number(prixRetour) %></span> </h5>
   </div>
   <script>
-    const options = document.querySelectorAll("input[type='checkbox']")
-    const total = document.getElementById('total')
-    options.forEach(option=>{
-      option.addEventListener('change',()=>{
-        if (option.checked) {
-          optionArray = option.value.split(" ")
-          total.innerHTML = Number(total.innerHTML) + Number(optionArray[1])
-        } else {
-          optionArray = option.value.split(" ")
-          total.innerHTML = Number(total.innerHTML) - Number(optionArray[1])
-        }
-      
-      })
-    })
+document.addEventListener('DOMContentLoaded', () => {
+    const options = document.querySelectorAll("input[type='checkbox']");
+    const totalElement = document.getElementById('total');
+    const reduc = document.querySelector("input.reduc");
 
-    const reduc = document.getElementById("reduc");
-    // Add an event listener to the reduc checkbox
-    reduc.addEventListener('change', () => {
-      // Get the total element
-      const total = document.getElementById('total');
-      if (reduc.checked) {
-        // Subtract 10 from the total if reduc is checked
-        total.innerHTML = Number(total.innerHTML) - 10;
-      } else {
-        // Otherwise, do nothing
-        total.innerHTML = Number(total.innerHTML) + 10;
-      }
+    // Convertir le contenu de totalElement en nombre
+    let total = parseFloat(totalElement.innerHTML);
+
+    // Fonction pour recalculer le total
+    function recalculateTotal() {
+        let currentTotal = total; // Utiliser la valeur initiale du total
+
+        // Ajouter les options cochées au total
+        options.forEach(option => {
+            if (option.checked && !option.classList.contains('reduc')) {
+                const optionArray = option.value.split(" ");
+                currentTotal += parseFloat(optionArray[1]);
+            }
+        });
+
+        // Appliquer la réduction si elle est cochée et si l'élément existe
+        if (reduc && reduc.checked) {
+            currentTotal -= 10;
+        }
+
+        // Mettre à jour le total affiché
+        totalElement.innerHTML = currentTotal.toFixed(2);
+    }
+
+    // Écouteur d'événement pour les cases à cocher des options
+    options.forEach(option => {
+        option.addEventListener('change', () => {
+            recalculateTotal(); // Recalculez le total pour tenir compte de la réduction
+        });
     });
-  </script>
+
+    // Écouteur d'événement pour la case à cocher de réduction si l'élément existe
+    if (reduc) {
+        reduc.addEventListener('change', () => {
+            recalculateTotal();
+        });
+    }
+});
+</script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Ensure the checkbox is unchecked on page load
