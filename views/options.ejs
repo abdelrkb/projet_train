@@ -42,13 +42,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/home">Acceuil</a>
+          <a class="nav-link" href="/home">Accueil</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/reservation">Réservez votre ticket <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/panier">Votre panier</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/account">Mon compte </a>
         </li>
       </ul>
   </div>
@@ -72,6 +75,15 @@
         </div>
       </div>
       <div class="col-md-6">
+        <% if (user.abonnement) { %>
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Utiliser votre carte d'abonnement pour une réduction de 10 € ?</h5>
+                  <input type="checkbox" class="reduc" name="reduc" value="reduc" id="reduc">
+                  <label class="option-label"> Utiliser réduction</label>
+              </div>
+          </div>
+      <% } %>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Sélectionner vos options supplémentaires</h5>
@@ -104,14 +116,30 @@
     const total = document.getElementById('total')
     options.forEach(option=>{
       option.addEventListener('change',()=>{
+        if (option.checked) {
+          optionArray = option.value.split(" ")
+          total.innerHTML = Number(total.innerHTML) + Number(optionArray[1])
+        } else {
+          optionArray = option.value.split(" ")
+          total.innerHTML = Number(total.innerHTML) - Number(optionArray[1])
+        }
       
-      if (option.checked) {
-        optionArray = option.value.split(" ")
-        total.innerHTML = Number(total.innerHTML) + Number(optionArray[1])
-     } else {
-      optionArray = option.value.split(" ")
-      total.innerHTML = Number(total.innerHTML) - Number(optionArray[1])
-     }})})
+      })
+    })
+
+    const reduc = document.getElementById("reduc");
+    // Add an event listener to the reduc checkbox
+    reduc.addEventListener('change', () => {
+      // Get the total element
+      const total = document.getElementById('total');
+      if (reduc.checked) {
+        // Subtract 10 from the total if reduc is checked
+        total.innerHTML = Number(total.innerHTML) - 10;
+      } else {
+        // Otherwise, do nothing
+        total.innerHTML = Number(total.innerHTML) + 10;
+      }
+    });
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -121,7 +149,9 @@
           option.checked = false;
       })
 
-      
+      if (reduc) {
+        reduc.checked = false;
+      }
     });
   </script>
   <!-- Bootstrap JS and dependencies -->

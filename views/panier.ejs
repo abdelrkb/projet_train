@@ -28,13 +28,16 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/home">Acceuil</a>
+            <a class="nav-link" href="/home">Accueil</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/reservation">Réservez votre ticket</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/panier">Votre panier <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Mon compte </a>
           </li>
         </ul>
       </div>
@@ -46,7 +49,7 @@
     <div class="row">
       <% if(reservations == undefined || reservations==null || reservations.length== 0 ) { %>
         <div class="col-md-12">
-          <h4>Vous n'avez pas de réservations...</h4>  
+          <h4 class="text-center">Vous n'avez pas de réservations...</h4>  
         </div>
       <% } else { %>
         <% reservations.forEach(reservation => { %>

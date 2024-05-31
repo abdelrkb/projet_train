@@ -55,6 +55,8 @@ const userSchema = new mongoose.Schema(
         "email": String,
         "telephone": String,
         "addresse" : String,
+        "mdp" : String,
+        "abonnement" : Boolean,
     }
 )
 const taskSchema = new mongoose.Schema(
@@ -176,37 +178,54 @@ app.post('/trajet', async (req,res)=>{
 })
 
 app.post('/options', async (req, res) => {
-    const options = await optionModel.find();
-    
-    const { depart, arrivee, trajet, retour, prixdepart, prixretour } = req.body;
-    let prixDep = 0;
-    let heureDep = null;
-    let prixRe = 0;
-    let heureRe = null;
+    try {
+        const options = await optionModel.find();
+        const user = req.session.user;
+        const { depart, arrivee, trajet, retour, prixdepart, prixretour } = req.body;
+        
+        // Convertir les prix de départ et de retour en nombres
+        const parsedPrixDepart = parseFloat(prixdepart);
+        const parsedPrixRetour = parseFloat(prixretour);
+        
+        // Assurez-vous que les prix sont des nombres valides
+        if (isNaN(parsedPrixDepart) || isNaN(parsedPrixRetour)) {
+            throw new Error("Invalid price values");
+        }
 
-    if (prixdepart) {
-        const heureprixD = prixdepart.split(' ');
-        prixDep = heureprixD[1];
-        heureDep = heureprixD[0];
-    }
-    
-    if (prixretour) {
-        const heureprixR = prixretour.split(' ');
-        prixRe = heureprixR[1];
-        heureRe = heureprixR[0];
-    }
+        let prixDep = parsedPrixDepart;
+        let heureDep = null;
+        let prixRe = parsedPrixRetour;
+        let heureRe = null;
 
-    res.render('options', { 
-        dateDepart: depart, 
-        dateArrivee: arrivee, 
-        trajet: trajet, 
-        prixDepart: prixDep, 
-        prixRetour: prixRe, 
-        heureDepart: heureDep, 
-        heureRetour: heureRe, 
-        options: options 
-    });
+        if (prixdepart) {
+            const heureprixD = prixdepart.split(' ');
+            prixDep = parseFloat(heureprixD[1]);
+            heureDep = heureprixD[0];
+        }
+        
+        if (prixretour) {
+            const heureprixR = prixretour.split(' ');
+            prixRe = parseFloat(heureprixR[1]);
+            heureRe = heureprixR[0];
+        }
+
+        res.render('options', { 
+            dateDepart: depart, 
+            dateArrivee: arrivee, 
+            trajet: trajet, 
+            prixDepart: prixDep, 
+            prixRetour: prixRe, 
+            heureDepart: heureDep, 
+            heureRetour: heureRe, 
+            options: options,
+            user : user
+        });
+    } catch (error) {
+        console.error("Error fetching options:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
 
 app.get('/panier', async (req,res)=>{
     const reservations =  req.session.panier
@@ -214,32 +233,49 @@ app.get('/panier', async (req,res)=>{
     res.render("panier",{ reservations}) 
 
 })
-app.post('/panier', async (req,res)=>{
-    const options =  await optionModel.find();
-    // recuperer les options checked
-    const checkBox = req.body.ops
-    
-    const {dateDepart,dateArrivee,trajet,prixDepart,prixRetour, heureDepart, heureRetour} = req.body
-    let total = Number(prixDepart) + Number(prixRetour)
-    console.log("dateDepart")
-    console.log(dateDepart)
-    const optionscoch = []
-    checkBoxNoms=[]
-    if (checkBox != undefined) {checkBox.forEach(btn=>{
-        btnArray = btn.split(" ")
-        const op= {"nom":btnArray[0],"prix":btnArray[1]} 
-        total += Number(btnArray[1]) 
-        optionscoch.push(op)
-        checkBoxNoms.push(btnArray[0])
-    })}
-    //res.send(checkBoxNoms)
-    const idR = uuidv4()
-    req.session.panier.push({id:idR,dateDepart:dateDepart,dateArrivee:dateArrivee,trajet:trajet,prixDepart:prixDepart,prixRetour:prixRetour, heureDepart:heureDepart, heureRetour:heureRetour,optionsCho:optionscoch,total:total,options:options,checkBox:checkBox ,checkBoxNoms:checkBoxNoms})
-    const reservations =  req.session.panier
-    res.redirect('/panier'); 
-    //res.render("panier",{ reservations}) 
-    //  res.render('payer',{dateDepart:dateDepart,dateArrivee:dateArrivee,trajet:trajet,prixDepart:prixDepart,prixRetour:prixRetour, heureDepart:heureDepart, heureRetour:heureRetour,optionsCho:optionscoch,total:total,options:options,checkBox:checkBox ,checkBoxNoms:checkBoxNoms, train2: '/images/train2.png', train: '/images/train.jpeg'}); /* sandBox de paypal */
-})
+app.post('/panier', async (req, res) => {
+    try {
+        const options = await optionModel.find();
+        const checkBox = req.body.ops;
+        const useReduc = req.body.reduc !== undefined; // Check if the reduction checkbox is checked
+        
+        const {dateDepart, dateArrivee, trajet, prixDepart, prixRetour, heureDepart, heureRetour} = req.body;
+        let total = Number(prixDepart) + Number(prixRetour);
+        
+        const optionscoch = [];
+        if (checkBox != undefined) {
+            checkBox.forEach(btn => {
+                const btnArray = btn.split(" ");
+                const op = {"nom": btnArray[0], "prix": btnArray[1]};
+                total += Number(btnArray[1]);
+                optionscoch.push(op);
+            });
+        }
+        
+        if (useReduc) {
+            total -= 10; // Apply the reduction
+        }
+
+        const idR = uuidv4();
+        req.session.panier.push({
+            id: idR,
+            dateDepart: dateDepart,
+            dateArrivee: dateArrivee,
+            trajet: trajet,
+            prixDepart: prixDepart,
+            prixRetour: prixRetour,
+            heureDepart: heureDepart,
+            heureRetour: heureRetour,
+            optionsCho: optionscoch,
+            total: total
+        });
+        
+        res.redirect('/panier');
+    } catch (error) {
+        console.error("Error adding to panier:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 app.get('/panier/delete/:id',  (req, res) => {
     const id=req.params.id
@@ -429,6 +465,50 @@ app.post('/users', async (req, res) => {
 app.get('/home', (req, res) => {
     console.log('Home route accessed');
     res.render('home');
+});
+
+// Route pour afficher le formulaire de connexion
+app.get('/account', (req, res) => {
+    if (req.session.user) {
+        // Si une session de compte est connectée, redirigez vers la page de profil
+        res.redirect('/profile');
+    } else {
+        // Sinon, afficher le formulaire de connexion
+        res.render('login'); // Créez une vue pour le formulaire de connexion
+    }
+});
+
+// Route pour gérer la soumission du formulaire de connexion
+app.post('/account/login', async (req, res) => {
+    const { email, password } = req.body;
+    // Vérifiez si l'utilisateur existe dans la base de données avec cet email et ce mot de passe
+    const user = await userModel.findOne({ email: email, mdp: password });
+    if (user) {
+        req.session.user = user;
+        res.redirect('/profile');
+    } else {
+        // Si les informations de connexion sont incorrectes, redirigez vers la page de connexion avec un message d'erreur
+        res.redirect('/account');
+    }
+});
+
+// Route pour afficher le profil de l'utilisateur
+app.get('/profile', (req, res) => {
+    if (req.session.user) {
+        // Si une session de compte est connectée, afficher les détails de l'utilisateur
+        res.render('profile', { user: req.session.user }); // Créez une vue pour afficher le profil de l'utilisateur
+    } else {
+        // Sinon, redirigez vers la page de connexion
+        res.redirect('/account');
+    }
+});
+
+// Route pour la déconnexion de l'utilisateur
+app.get('/logout', (req, res) => {
+    // Détruire la session de compte
+    req.session.destroy(() => {
+        res.redirect('/account');
+    });
 });
 
 

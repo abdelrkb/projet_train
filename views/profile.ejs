@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Profile</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">Transport Reservation</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/home">Accueil <span class="sr-only">(current) </span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/reservation">Réservez votre ticket</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/panier">Votre panier</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/account">Mon compte </a>
+              </li>
+            </ul>
+          </div>
+      </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Votre Profil</h1>
+        <div class="d-flex justify-content-center">
+            <table class="table table-bordered text-center" style="width: auto;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Mail</th>
+                        <th>Carte d'abonnement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= user.nom %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.abonnement ? 'Oui' : 'Non' %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-primary" href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

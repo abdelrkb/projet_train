@@ -18,13 +18,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/home">Acceuil</a>
+          <a class="nav-link" href="/home">Accueil</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/reservation">Réservez votre ticket</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/panier">Votre panier <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/account">Mon compte </a>
         </li>
       </ul>
     </div>
@@ -58,7 +61,7 @@
           <td width = "120px"><%= reservation.trajet %></td> <!--<th>Trajet</th> -->
           <td width = "120px"><%= reservation.dateDepart %> <%= reservation.heureDepart %></td> <!--<th>Ticket Aller</th> -->
           <td width = "120px"><%= reservation.prixDepart %></td> <!--<th>Prix Aller</th> -->
-          <td width = "120px"><%= reservation.dateArrivee %> <%= reservation.HeureArrivee %></td> <!--<th>Ticket Retour</th> -->
+          <td width = "120px"><%= reservation.dateArrivee %> <%= reservation.heureDepart %></td> <!--<th>Ticket Retour</th> -->
           <td width = "120px"><%= reservation.prixRetour %></td> <!-- <th>Prix Retour</th> -->
           <td width = "120px"><%= ticketNumber %></td><!-- -->
           <td width = "120px"><%= new Date().toISOString().slice(0,10) %></td>
@@ -72,7 +75,7 @@
   <button width = "50px" class="btn btn-primary text-center" id="download-pdf">Download PDF</button>
   <br>  <br>
 
-  <button width = "50px" class="btn btn-primary text-center" href="/home">Revenir a l'acceuil</button>
+  <button width = "50px" class="btn btn-primary text-center" href="/home">Revenir a l'accueil</button>
 
 </div>
 
